@@ -109,7 +109,7 @@ public class login extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("WISCOL ReportCard Management System");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/f_1.JPG"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/login/images/f_1.JPG"))); // NOI18N
         jLabel5.setText("jLabel5");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
