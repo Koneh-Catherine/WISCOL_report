@@ -4,16 +4,25 @@
  */
 package com.mycompany.wiscol_report_card_generator;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+
+/**
+ * Report Card View Page - Swing UI that closely matches the report card in Excel.
+ */
 /**
  *
- * @author DELL
+ * @author Asongna Frank
  */
-public class report_card_preview extends javax.swing.JFrame {
+public class report_card_view_page extends javax.swing.JFrame {
 
+    private JTable marksTable;
+    private JButton exportPdfButton, exportExcelButton;
     /**
-     * Creates new form report_card_preview
+     * Creates new form report_card_view_page
      */
-    public report_card_preview() {
+    public report_card_view_page() {
         initComponents();
     }
 
@@ -32,11 +41,11 @@ public class report_card_preview extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
@@ -59,20 +68,20 @@ public class report_card_preview extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(report_card_preview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(report_card_view_page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(report_card_preview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(report_card_view_page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(report_card_preview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(report_card_view_page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(report_card_preview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(report_card_view_page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new report_card_preview().setVisible(true);
+                new report_card_view_page().setVisible(true);
             }
         });
     }
