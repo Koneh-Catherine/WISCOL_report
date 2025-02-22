@@ -200,7 +200,7 @@
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/com/mycompany/login/images/f_1.JPG"/>
+              <Image iconType="2" name="D:\projects\java\wiscol\WISCOL_report\wiscol_report_card_generator\src\main\resources\f_1.JPG"/>
             </Property>
             <Property name="text" type="java.lang.String" value="jLabel5"/>
           </Properties>

@@ -1,15 +1,16 @@
-
 package com.mycompany.model;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.border.TitledBorder;
-
+import java.io.File;
 
 public class Model_Menu {
     private String icon;
     private String name;
     private MenuType type;
+
+    // Change this to your absolute resources directory
+    private static final String IMAGE_DIRECTORY = "D:/projects/java/wiscol/WISCOL_report/wiscol_report_card_generator/src/main/resources/";
 
     public Model_Menu() {
     }
@@ -44,10 +45,19 @@ public class Model_Menu {
         this.type = type;
     }
     
-    public Icon toIcon(){
-        return new ImageIcon(getClass().getResource("/com/mycompany/login/images" + icon + ".png"));
+    public Icon toIcon() {
+        String imagePath = IMAGE_DIRECTORY + icon + ".png";
+        File imageFile = new File(imagePath);
+
+        if (imageFile.exists()) {
+            return new ImageIcon(imagePath);
+        } else {
+            System.out.println("⚠️ Image not found: " + imagePath);
+            return new ImageIcon(IMAGE_DIRECTORY + "default.png"); // Use a default image
+        }
     }
-    public static enum MenuType{
+
+    public static enum MenuType {
         TITLE, MENU, EMPTY
     }
 }
