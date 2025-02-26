@@ -15,15 +15,21 @@ public class MenuItem extends javax.swing.JPanel {
     public MenuItem(Model_Menu data) {
         initComponents();
         setOpaque(false);
-        if(data.getType()==Model_Menu.MenuType.MENU){  
-            lbIcon.setIcon(data.toIcon());
-            lbName.setText(data.getName());
-        }else if(data.getType()==Model_Menu.MenuType.TITLE){
-            lbIcon.setText(data.getName());
-            lbIcon.setFont(new Font("sansserif", 1, 12));
-            lbName.setVisible(false);            
-        }else{
+        if(data.getType()==null){
             lbName.setText(" ");
+        }else switch (data.getType()) {
+            case MENU:
+                lbIcon.setIcon(data.toIcon());
+                lbName.setText(data.getName());
+                break;
+            case TITLE:
+                lbIcon.setText(data.getName());
+                lbIcon.setFont(new Font("sansserif", 1, 12));
+                lbName.setVisible(false);
+                break;
+            default:
+                lbName.setText(" ");
+                break;
         }
     }
     
