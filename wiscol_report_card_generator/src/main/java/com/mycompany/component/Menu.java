@@ -1,6 +1,7 @@
 
 package com.mycompany.component;
 
+import com.mycompany.event.EventMenuSelected;
 import com.mycompany.model.Model_Menu;
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -15,7 +16,12 @@ import javax.swing.JFrame;
 
 public class Menu extends javax.swing.JPanel {
 
-  
+    private EventMenuSelected event;
+    
+    /*public void addEventMenuSelected(EventMenuSelected event){
+        this.event=event;
+        listMenu1.addEventMenuSelected(event);
+    }*/
     public Menu() {
         initComponents();
         setOpaque(false);
@@ -83,8 +89,8 @@ public class Menu extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelMoving, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(listMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE))
+                .addGap(15, 15, 15)
+                .addComponent(listMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -4,6 +4,7 @@
  */
 package com.mycompany.main;
 
+import com.mycompany.event.EventMenuSelected;
 import java.awt.Color;
 
 /**
@@ -18,7 +19,14 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
         setBackground(new Color(0,0,0,0));
-        menu1.initMoving(Main.this); 
+        menu.initMoving(Main.this); 
+        /*menu.addEventMenuSelected(new EventMenuSelected(){
+            @Override
+            public void selected(int index) {
+                System.out.println("Selected Index: "+ index);
+            }
+            
+        });*/
     }
 
     /**
@@ -31,7 +39,7 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         panelBorder1 = new com.mycompany.swing.PanelBorder();
-        menu1 = new com.mycompany.component.Menu();
+        menu = new com.mycompany.component.Menu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -43,12 +51,12 @@ public class Main extends javax.swing.JFrame {
         panelBorder1Layout.setHorizontalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
-                .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 971, Short.MAX_VALUE))
+                .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(971, 971, 971))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menu1, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+            .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -102,7 +110,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.mycompany.component.Menu menu1;
+    private com.mycompany.component.Menu menu;
     private com.mycompany.swing.PanelBorder panelBorder1;
     // End of variables declaration//GEN-END:variables
 }
