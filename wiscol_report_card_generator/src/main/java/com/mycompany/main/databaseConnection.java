@@ -1,5 +1,5 @@
 
-package com.mycompany.wiscol_report_card_generator;
+package com.mycompany.main;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.*;

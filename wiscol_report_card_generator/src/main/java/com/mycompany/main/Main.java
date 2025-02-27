@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.wiscol_report_card_generator;
+package com.mycompany.main;
 
 import java.awt.Color;
 
@@ -17,8 +17,8 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-        setBackground(new Color(0, 0, 0, 0));
-        menu1.initMoving(Main.this);
+        setBackground(new Color(0,0,0,0));
+        menu1.initMoving(Main.this); 
     }
 
     /**
@@ -30,8 +30,8 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelBorder1 = new com.mycompany.compononts.PanelBorder();
-        menu1 = new com.mycompany.compononts.Menu();
+        panelBorder1 = new com.mycompany.swing.PanelBorder();
+        menu1 = new com.mycompany.component.Menu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -43,14 +43,12 @@ public class Main extends javax.swing.JFrame {
         panelBorder1Layout.setHorizontalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
-                .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 971, Short.MAX_VALUE))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBorder1Layout.createSequentialGroup()
-                .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(menu1, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -99,13 +97,12 @@ public class Main extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Main().setVisible(true);
-                
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.mycompany.compononts.Menu menu1;
-    private com.mycompany.compononts.PanelBorder panelBorder1;
+    private com.mycompany.component.Menu menu1;
+    private com.mycompany.swing.PanelBorder panelBorder1;
     // End of variables declaration//GEN-END:variables
 }
