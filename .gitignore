@@ -1,5 +1,9 @@
+# Ignore build output directories
 /reportCardSystem/target/
-/reportCardSystem/nbproject/private/
-/wiscol_repot_card_generator/target/
 /wiscol_report_card_generator/target/
+
+# Ignore NetBeans private project files
+/reportCardSystem/nbproject/private/
+
+# Ignore environment variables file
 .env
