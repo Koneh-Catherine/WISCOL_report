@@ -24,34 +24,64 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
+    
+    private Form_1 dashboard;
+    private Form_2 results;
+    private Form_3 reportCards;
+    private Form_4 students;
+    private Form_5 teachers;
+    private Form_6 users;
+    
     public Main() {
         initComponents();
         setBackground(new Color(0,0,0,0));
+        
+        dashboard = new Form_1();
+        results = new Form_2();
+        reportCards = new Form_3();
+        students = new Form_4();
+        teachers = new Form_5();
+        users = new Form_6();
+        
         menu.initMoving(Main.this); 
         menu.addEventMenuSelected(new EventMenuSelected(){
             @Override
             public void selected(int index) {
                 if (index==0) {
-                    System.out.println("this is index:"+index);    
-                    setForm(new Form_1());
+                    System.out.println("this is the Dashboard Tab");    
+                    setForm(dashboard);
                     
                 } else if (index==1) {
-                    System.out.println("this is index:"+index);
-                    setForm(new Form_2());
+                    System.out.println("this is the Results Tab");
+                    setForm(results);
+                    
                 } else if (index==2) {
-                    System.out.println("this is index:"+index);
-                    setForm(new Form_3());
+                    System.out.println("this is the Report Card Tab");
+                    setForm(reportCards);
+                    
                 } else if (index==6) {
-                    System.out.println("this is index:"+index);
-                    setForm(new Form_4());
+                    System.out.println("this is the Students Tab");
+                    setForm(students);
+                    
                 } else if (index==7) {
-                    System.out.println("this is index:"+index);
-                    setForm(new Form_5());
+                    System.out.println("this is the Teacher's Tab");
+                    setForm(teachers);
+                    
                 } else if (index==8) {
-                    System.out.println("this is index:"+index);
-                    setForm(new Form_6());
+                    System.out.println("this is the Users Tab");
+                    setForm(users);
+                    
                 } else if (index==9) {
-                    System.out.println("this is index:"+index);
+                    System.out.println("You closed the application");
+                    int confirm = javax.swing.JOptionPane.showConfirmDialog(
+                        Main.this,
+                        "Are you sure you want to logout?",
+                        "Confirm Logout",
+                        javax.swing.JOptionPane.YES_NO_OPTION
+                    );
+                    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                        System.exit(0);
+                    }
                 }
             }
             
