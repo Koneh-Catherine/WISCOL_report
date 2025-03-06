@@ -5,7 +5,15 @@
 package com.mycompany.main;
 
 import com.mycompany.event.EventMenuSelected;
+import com.mycompany.form.Form_1;
+import com.mycompany.form.Form_2;
+import com.mycompany.form.Form_3;
+import com.mycompany.form.Form_4;
+import com.mycompany.form.Form_5;
+import com.mycompany.form.Form_6;
+import com.mycompany.form.Form_7;
 import java.awt.Color;
+import javax.swing.JComponent;
 
 /**
  *
@@ -20,15 +28,45 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         setBackground(new Color(0,0,0,0));
         menu.initMoving(Main.this); 
-        /*menu.addEventMenuSelected(new EventMenuSelected(){
+        menu.addEventMenuSelected(new EventMenuSelected(){
             @Override
             public void selected(int index) {
-                System.out.println("Selected Index: "+ index);
+                if (index==0) {
+                    System.out.println("this is index:"+index);    
+                    setForm(new Form_1());
+                    
+                } else if (index==1) {
+                    System.out.println("this is index:"+index);
+                    setForm(new Form_2());
+                } else if (index==2) {
+                    System.out.println("this is index:"+index);
+                    setForm(new Form_3());
+                } else if (index==6) {
+                    System.out.println("this is index:"+index);
+                    setForm(new Form_4());
+                } else if (index==7) {
+                    System.out.println("this is index:"+index);
+                    setForm(new Form_5());
+                } else if (index==8) {
+                    System.out.println("this is index:"+index);
+                    setForm(new Form_6());
+                } else if (index==9) {
+                    System.out.println("this is index:"+index);
+                }
             }
             
-        });*/
+        });
+        //set the system to open homepage initially
+        setForm(new Form_1());
     }
 
+    private void setForm(JComponent com){
+        mainPanel.removeAll();
+        mainPanel.add(com);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,11 +78,17 @@ public class Main extends javax.swing.JFrame {
 
         panelBorder1 = new com.mycompany.swing.PanelBorder();
         menu = new com.mycompany.component.Menu();
+        mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
         panelBorder1.setBackground(new java.awt.Color(255, 255, 255));
+
+        mainPanel.setBackground(new java.awt.Color(214, 217, 223));
+        mainPanel.setForeground(new java.awt.Color(0, 0, 0));
+        mainPanel.setOpaque(false);
+        mainPanel.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
         panelBorder1.setLayout(panelBorder1Layout);
@@ -52,11 +96,17 @@ public class Main extends javax.swing.JFrame {
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(971, 971, 971))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+            .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
+            .addGroup(panelBorder1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -110,6 +160,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel mainPanel;
     private com.mycompany.component.Menu menu;
     private com.mycompany.swing.PanelBorder panelBorder1;
     // End of variables declaration//GEN-END:variables
