@@ -5,13 +5,13 @@
 package com.mycompany.main;
 
 import com.mycompany.event.EventMenuSelected;
-import com.mycompany.form.Form_1;
-import com.mycompany.form.Form_2;
-import com.mycompany.form.Form_3;
-import com.mycompany.form.Form_4;
-import com.mycompany.form.Form_5;
-import com.mycompany.form.Form_6;
-import com.mycompany.form.Form_7;
+import com.mycompany.form.Dashboard;
+import com.mycompany.form.Results;
+import com.mycompany.form.ReportCards;
+import com.mycompany.form.Students;
+import com.mycompany.form.Teachers;
+import com.mycompany.form.Users;
+import com.mycompany.form.Subjects;
 import java.awt.Color;
 import javax.swing.JComponent;
 
@@ -25,23 +25,26 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     
-    private Form_1 dashboard;
-    private Form_2 results;
-    private Form_3 reportCards;
-    private Form_4 students;
-    private Form_5 teachers;
-    private Form_6 users;
+    private Dashboard dashboard;
+    private Results results;
+    private ReportCards reportCards;
+    private Students students;
+    private Teachers teachers;
+    private Users users;
+    private Subjects subjects;
     
     public Main() {
         initComponents();
         setBackground(new Color(0,0,0,0));
         
-        dashboard = new Form_1();
-        results = new Form_2();
-        reportCards = new Form_3();
-        students = new Form_4();
-        teachers = new Form_5();
-        users = new Form_6();
+        dashboard = new Dashboard();
+        results = new Results();
+        reportCards = new ReportCards();
+        students = new Students();
+        teachers = new Teachers();
+        users = new Users();
+        subjects = new Subjects();
+        
         
         menu.initMoving(Main.this); 
         menu.addEventMenuSelected(new EventMenuSelected(){
@@ -72,6 +75,10 @@ public class Main extends javax.swing.JFrame {
                     setForm(users);
                     
                 } else if (index==9) {
+                    System.out.println("this is the Subjects Tab");
+                    setForm(subjects);
+                    
+                } else if (index==10) {
                     System.out.println("You closed the application");
                     int confirm = javax.swing.JOptionPane.showConfirmDialog(
                         Main.this,
@@ -87,7 +94,7 @@ public class Main extends javax.swing.JFrame {
             
         });
         //set the system to open homepage initially
-        setForm(new Form_1());
+        setForm(new Dashboard());
     }
 
     private void setForm(JComponent com){

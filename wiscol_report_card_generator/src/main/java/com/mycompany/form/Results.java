@@ -8,12 +8,12 @@ package com.mycompany.form;
  *
  * @author DELL
  */
-public class Form_6 extends javax.swing.JPanel {
+public class Results extends javax.swing.JPanel {
 
     /**
      * Creates new form Form_1
      */
-    public Form_6() {
+    public Results() {
         initComponents();
     }
 
@@ -31,7 +31,7 @@ public class Form_6 extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(104, 104, 104));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Users");
+        jLabel1.setText("Results");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
