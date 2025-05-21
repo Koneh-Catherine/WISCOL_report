@@ -29,4 +29,17 @@ public class Subject {
     public String getTeacherNames() {
         return teacherNames;
     }
+    
+     // Setters to allow updating existing instances
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCoefficient(int coefficient) {
+        this.coefficient = coefficient;
+    }
+
+    public void setTeacherNames(String teacherNames) {
+        this.teacherNames = teacherNames;
+    }
 }

@@ -1,23 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package com.mycompany.form;
 
 import com.mycompany.dao.SubjectDAO;
+import com.mycompany.dao.TeacherDAO;
 import com.mycompany.model.Subject;
 import com.mycompany.component.SubjectsHeaderPanel;
-import com.mycompany.component.ActionCellRenderer;
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.List;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
-public class Subjects extends javax.swing.JPanel {
-    
+public class Subjects extends JPanel {
     private SubjectsHeaderPanel headerPanel;
     private JPanel tablePanel;
     private JLabel currentSubjectsLabel;
@@ -25,152 +25,258 @@ public class Subjects extends javax.swing.JPanel {
     private JTable subjectsTable;
     private JScrollPane scrollPane;
     private DefaultTableModel dtm;
-    
-    // Store all data locally for filtering
-    private final java.util.List<Subject> allSubjects;
+    private JButton addButton;
+    private JButton saveButton;
+    private JButton deleteButton;
+    private JButton refreshButton;
 
-    /**
-     * Creates new form Form_1
-     */
+    private List<Subject> allSubjects;
+    private final List<String> teacherOptions;
+    private final Set<Integer> editedRows = new LinkedHashSet<>();
+    private boolean newRowAdded = false;
+
+
     public Subjects() {
-        // Initialize list from DAO once (you can also load dynamically if needed)
-        allSubjects = SubjectDAO.getAllSubjects();
+        teacherOptions = TeacherDAO.getAllTeacherNames();
         initComponents();
-        initCustomComponents(); // Our custom initialization for the JTable interface
+        initCustomComponents();
     }
-    
-    
-    private void initCustomComponents() {
-    // Set the background color of the main panel.
-    this.setBackground(new Color(237, 241, 247));
-    // Use a BorderLayout for the main panel.
-    setLayout(new BorderLayout());
-    
-    // ---------------- Create Header and Table Panels ----------------
-    
-    // Header panel remains the same; ensure it sets its own bounds or preferred size.
-    headerPanel = new SubjectsHeaderPanel();
-    headerPanel.setPreferredSize(new Dimension(820, 60));
-    // (Inside SubjectsHeaderPanel, you already have absolute positioning for its components.)
-    
-    // Table panel: we keep your current absolute positioning for inner components.
-    tablePanel = new JPanel(null);
-    tablePanel.setBackground(Color.WHITE);
-    tablePanel.setPreferredSize(new Dimension(820, 340));
-    
-    // Add "Current Subjects" label.
-    currentSubjectsLabel = new JLabel("Current Subjects");
-    currentSubjectsLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
-    currentSubjectsLabel.setForeground(new Color(51, 51, 51));
-    currentSubjectsLabel.setBounds(20, 20, 200, 25);
-    tablePanel.add(currentSubjectsLabel);
-    
-    // Search field with placeholder "search"
-    searchField = new JTextField();
-    searchField.setFont(new Font("SansSerif", Font.PLAIN, 14));
-    searchField.setForeground(new Color(102, 102, 102));
-    searchField.setBounds(620, 20, 180, 30);
-    searchField.putClientProperty("JTextField.placeholderText", "search...");
-    tablePanel.add(searchField);
-    
-    // Table setup
-    subjectsTable = new JTable();
-    subjectsTable.setRowHeight(30);
-    subjectsTable.setForeground(new Color(125,125,125));
-    subjectsTable.setFont(new Font("SansSerif", Font.PLAIN, 14));
-    subjectsTable.getTableHeader().setReorderingAllowed(false);
-    subjectsTable.getTableHeader().setBackground(new Color(245, 245, 245));
-    subjectsTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
-    // Remove borders from the table.
-    subjectsTable.setShowGrid(false);
-    subjectsTable.setIntercellSpacing(new Dimension(0, 0));
-    
-    // Ensure the entire table (including unused area) is white.
-    subjectsTable.setFillsViewportHeight(true);
-    subjectsTable.setBackground(Color.WHITE);
 
-    // Override the default renderer so that every cell's background remains white.
-    subjectsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                       boolean hasFocus, int row, int column) {
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            if (!isSelected) {
-                c.setBackground(Color.WHITE);
+    private void initCustomComponents() {
+        setBackground(new Color(237, 241, 247));
+        setLayout(new BorderLayout());
+
+        // Header panel
+        headerPanel = new SubjectsHeaderPanel();
+        headerPanel.setPreferredSize(new Dimension(820, 60));
+       
+        // Table panel
+        tablePanel = new JPanel(null);
+        tablePanel.setBackground(Color.WHITE);
+        tablePanel.setPreferredSize(new Dimension(820, 500));
+
+        // Title
+        currentSubjectsLabel = new JLabel("Current Subjects");
+        currentSubjectsLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        currentSubjectsLabel.setForeground(new Color(51, 51, 51));
+        currentSubjectsLabel.setBounds(20, 20, 200, 25);
+        tablePanel.add(currentSubjectsLabel);
+
+        // Buttons
+        addButton = new JButton("Add");
+        saveButton = new JButton("Save");
+        deleteButton = new JButton("Delete");
+        refreshButton = new JButton("Refresh");
+        styleButton(addButton);
+        styleButton(saveButton);
+        styleButton(deleteButton);
+        styleButton(refreshButton);
+        saveButton.setEnabled(false);
+        saveButton.setBackground(Color.GRAY);
+        deleteButton.setEnabled(true);
+
+        int btnY = 20, btnH = 30;
+        int startX = 240, gap = 10;
+        int w = 80;
+        addButton.setBounds(startX, btnY, w, btnH);
+        saveButton.setBounds(startX + (w+gap)*1, btnY, w, btnH);
+        deleteButton.setBounds(startX + (w+gap)*2, btnY, w, btnH);
+        refreshButton.setBounds(startX + (w+gap)*3, btnY, w, btnH);
+        tablePanel.add(addButton);
+        tablePanel.add(saveButton);
+        tablePanel.add(deleteButton);
+        tablePanel.add(refreshButton);
+
+        // Search
+        searchField = new JTextField();
+        searchField.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        searchField.setForeground(new Color(102, 102, 102));
+        searchField.setBounds(startX + (w+gap)*4, btnY, 170, btnH);
+        searchField.putClientProperty("JTextField.placeholderText", "search...");
+        tablePanel.add(searchField);
+
+        // Table
+        subjectsTable = new JTable();
+        subjectsTable.setRowHeight(30);
+        subjectsTable.setForeground(new Color(125, 125, 125));
+        subjectsTable.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        subjectsTable.getTableHeader().setReorderingAllowed(false);
+        subjectsTable.getTableHeader().setBackground(new Color(245, 245, 245));
+        subjectsTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+        subjectsTable.setShowGrid(false);
+        subjectsTable.setIntercellSpacing(new Dimension(0, 0));
+        subjectsTable.setFillsViewportHeight(true);
+        subjectsTable.setBackground(Color.WHITE);
+        subjectsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (!isSelected) c.setBackground(Color.WHITE);
+                return c;
             }
-            return c;
-        }
-    });
-    
-    dtm = new DefaultTableModel();
-    dtm.setColumnIdentifiers(new String[] { "#", "Subject Name", "Coefficient", "Teacher Name", "Action" });
-    subjectsTable.setModel(dtm);
-    
-    // Set the custom renderer for the Action column.
-    subjectsTable.getColumnModel().getColumn(4).setCellRenderer(new ActionCellRenderer());
-    
-    // Create scroll pane and remove its border.
-    scrollPane = new JScrollPane(subjectsTable);
-    scrollPane.setBorder(null);
-    scrollPane.getViewport().setBackground(Color.WHITE); // Ensure viewport background is white
-    scrollPane.setBounds(20, 70, 780, 250);
-    tablePanel.add(scrollPane);
-    
-    // Fill the table with initial data.
-    fillTable("");
-    
-    // Wire up search filtering.
-    searchField.addKeyListener(new KeyAdapter() {
-        @Override
-        public void keyReleased(KeyEvent e) {
-            String filter = searchField.getText().trim().toLowerCase();
-            fillTable(filter);
-        }
-    });
-    
-    // ---------------- Wrap the Header and Table Panels for Centering ----------------
-    
-    // Create a vertical box container to hold the header and table panels.
-    JPanel contentPanel = new JPanel();
-    contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-    contentPanel.setOpaque(false);
-    
-    // Set components' alignment so they are centered horizontally.
-    headerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-    tablePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-    
-    // Add the header and table panels (with optional vertical spacing).
-    contentPanel.add(headerPanel);
-    contentPanel.add(Box.createVerticalStrut(10));  // optional spacing between panels
-    contentPanel.add(tablePanel);
-    
-    // Create a container panel with FlowLayout (center alignment) to ensure
-    // equal free space on left and right.
-    JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-    centerPanel.setOpaque(false);
-    centerPanel.add(contentPanel);
-    
-    // Finally, add the centerPanel to the main panel.
-    add(centerPanel, BorderLayout.CENTER);
+        });
+
+        // Model: no checkbox for save, only Select column for delete
+        dtm = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return col == 0 || col >= 2;
+            }
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                switch (columnIndex) {
+                    case 0:
+                        return Boolean.class;
+                    case 1:
+                        return Integer.class; // Enables numeric sorting for the “#” column
+                    case 3:
+                        return Integer.class; // Coefficient column remains numeric
+                    default:
+                        return String.class;
+                }
+            }
+        };
+        dtm.setColumnIdentifiers(new String[]{"Select", "#", "Subject Name", "Coefficient", "Teacher Name"});
+        subjectsTable.setModel(dtm);
+        subjectsTable.getColumnModel().getColumn(0).setMaxWidth(60);
+        subjectsTable.getColumnModel().getColumn(1).setMaxWidth(50);
+
+        // Sorting
+        subjectsTable.setRowSorter(new TableRowSorter<>(dtm));
+
+        // Teacher editor
+        JComboBox<String> combo = new JComboBox<>(teacherOptions.toArray(new String[0]));
+        subjectsTable.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(combo));
+
+        // Scroll
+        scrollPane = new JScrollPane(subjectsTable);
+        scrollPane.setBorder(null);
+        scrollPane.getViewport().setBackground(Color.WHITE);
+        scrollPane.setBounds(20, 70, 780, 380);
+        tablePanel.add(scrollPane);
+
+        // Load data
+        loadSubjects();
+        fillTable("");
+
+        // Listeners
+        addButton.addActionListener(e -> onAddSubject());
+        saveButton.addActionListener(e -> onSave());
+        deleteButton.addActionListener(e -> onDelete());
+        refreshButton.addActionListener(e -> onRefresh());
+
+        // Enable save on any cell edit (excluding select column)
+        dtm.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int col = e.getColumn();
+                if (col >= 2) {
+                    saveButton.setEnabled(true);
+                    saveButton.setBackground(new Color(13,110,253));
+                    editedRows.add(e.getFirstRow());
+                }
+            }
+        });
+
+        searchField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                fillTable(searchField.getText().trim().toLowerCase());
+            }
+        });
+
+        // Layout
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setOpaque(false);
+        headerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        tablePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(headerPanel);
+        contentPanel.add(Box.createVerticalStrut(10));
+        contentPanel.add(tablePanel);
+        JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        centerPanel.setOpaque(false);
+        centerPanel.add(contentPanel);
+        add(centerPanel, BorderLayout.CENTER);
     }
-    
+
+    private void styleButton(JButton btn) {
+        btn.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btn.setForeground(Color.WHITE);
+        btn.setBackground(new Color(13, 110, 253));
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    }
+
+    private void loadSubjects() {
+        allSubjects = SubjectDAO.getAllSubjects();
+    }
+
     private void fillTable(String filter) {
         dtm.setRowCount(0);
         int count = 0;
-        for (Subject subject : allSubjects) {
-            if (filter.isEmpty() ||
-               subject.getName().toLowerCase().contains(filter) ||
-               subject.getTeacherNames().toLowerCase().contains(filter)) {
-                count++;
-                dtm.addRow(new Object[]{
-                    count,
-                    subject.getName(),
-                    subject.getCoefficient(),
-                    subject.getTeacherNames(),
-                    "Edit/Delete" // Placeholder; the renderer will handle this
-                });
+        for (Subject s : allSubjects) {
+            String tnames = s.getTeacherNames() == null ? "" : s.getTeacherNames();
+            if (filter.isEmpty() || s.getName().toLowerCase().contains(filter) || tnames.toLowerCase().contains(filter)) {
+                dtm.addRow(new Object[]{false, ++count, s.getName(), s.getCoefficient(), tnames.isEmpty() ? "--" : tnames});
             }
         }
+        editedRows.clear();
+    }
+
+    private void onAddSubject() {
+        dtm.addRow(new Object[]{false, dtm.getRowCount() + 1, "", "", "--"});
+        newRowAdded = true;
+        saveButton.setEnabled(true);
+        saveButton.setBackground(new Color(13,110,253));
+    }
+
+    private void onSave() {
+        for (int i : editedRows) {
+            int m = i;
+            String name = dtm.getValueAt(m, 2).toString().trim();
+            int coef = Integer.parseInt(dtm.getValueAt(m, 3).toString().trim());
+            String teacher = dtm.getValueAt(m, 4).toString();
+            Integer tid = "--".equals(teacher)?null:TeacherDAO.getTeacherIdByName(teacher);
+            if (m >= allSubjects.size() || newRowAdded && m == dtm.getRowCount()-1) {
+                Subject created = SubjectDAO.insertSubject(name, coef, tid);
+                allSubjects.add(created);
+            } else {
+                Subject ex = allSubjects.get(m);
+                SubjectDAO.updateSubject(ex.getId(), name, coef, tid);
+                ex.setName(name); ex.setCoefficient(coef); ex.setTeacherNames(teacher.equals("--")?null:teacher);
+            }
+        }
+        newRowAdded = false;
+        saveButton.setEnabled(false);
+        saveButton.setBackground(Color.GRAY);
+        fillTable(searchField.getText().trim().toLowerCase());
+    }
+
+    private void onDelete() {
+        int rowCount = dtm.getRowCount();
+        List<Subject> toRemove = new ArrayList<>();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            Boolean sel = (Boolean) dtm.getValueAt(i, 0);
+            if (sel != null && sel) {
+                Subject s = allSubjects.get(i);
+                SubjectDAO.deleteSubject(s.getId());
+                toRemove.add(s);
+            }
+        }
+        allSubjects.removeAll(toRemove);
+        saveButton.setEnabled(false);
+        saveButton.setBackground(Color.GRAY);
+        fillTable(searchField.getText().trim().toLowerCase());
+    }
+
+    private void onRefresh() {
+        loadSubjects();
+        saveButton.setEnabled(false);
+        saveButton.setBackground(Color.GRAY);
+        fillTable(searchField.getText().trim().toLowerCase());
     }
 
     /**

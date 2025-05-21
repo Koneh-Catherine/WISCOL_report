@@ -25,13 +25,13 @@ public class SubjectsHeaderPanel extends JPanel {
         breadcrumbLabel.setBounds(20, 35, 200, 20);
         add(breadcrumbLabel);
 
-        addSubjectBtn = new JButton("Add Subject");
-        addSubjectBtn.setFont(new Font("SansSerif", Font.BOLD, 14));
-        addSubjectBtn.setForeground(Color.WHITE);
-        addSubjectBtn.setBackground(new Color(13, 110, 253));
-        addSubjectBtn.setFocusPainted(false);
-        addSubjectBtn.setBounds(680, 15, 120, 35);
-        add(addSubjectBtn);
+//        addSubjectBtn = new JButton("Add Subject");
+//        addSubjectBtn.setFont(new Font("SansSerif", Font.BOLD, 14));
+//        addSubjectBtn.setForeground(Color.WHITE);
+//        addSubjectBtn.setBackground(new Color(13, 110, 253));
+//        addSubjectBtn.setFocusPainted(false);
+//        addSubjectBtn.setBounds(680, 15, 120, 35);
+//        add(addSubjectBtn);
     }
 
     public JButton getAddSubjectButton() {
